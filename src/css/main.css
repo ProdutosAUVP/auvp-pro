@@ -1,0 +1,1054 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================================
+   BASE
+   ========================================================= */
+@layer base {
+  :root {
+    /* Arte de fundo do hero — trocar aqui para atualizar todas as paginas. */
+    --hero-image: url('https://cdn.asupernova.com.br/auvp%20pro/1.png');
+    --container: 1200px;
+    --container-wide: 1600px;
+    --gutter: 20px;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white font-anek text-brand-ink antialiased;
+  }
+
+  /* Um anel de foco visivel e consistente em toda a navegacao por teclado. */
+  :focus-visible {
+    outline: 2px solid theme('colors.brand-green');
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* =========================================================
+   LAYOUT
+   ========================================================= */
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .container-wide {
+    width: 100%;
+    max-width: var(--container-wide);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .section {
+    @apply py-16 md:py-20;
+  }
+
+  .section-surface {
+    background-color: #f6f6f6;
+  }
+
+  .section-heading {
+    @apply text-2xl md:text-4xl font-bold tracking-tight text-zinc-700;
+  }
+
+  .eyebrow {
+    @apply text-sm font-medium text-zinc-500;
+  }
+
+  /* Botao principal: contorno fino, caixa alta, igual ao layout atual. */
+  .btn-outline {
+    @apply inline-flex w-full items-center justify-center border border-zinc-400 bg-transparent
+           px-8 py-4 text-xs font-bold uppercase tracking-[0.08em] text-zinc-700
+           transition-colors duration-300 hover:border-zinc-900 hover:bg-zinc-900 hover:text-white;
+  }
+
+  .btn-outline-light {
+    @apply inline-flex w-full items-center justify-center border border-white/60 bg-transparent
+           px-8 py-4 text-xs font-bold uppercase tracking-[0.08em] text-white
+           transition-colors duration-300 hover:bg-white hover:text-zinc-900;
+  }
+
+  .btn-solid {
+    @apply inline-flex w-full items-center justify-center border-none px-8 py-4 text-xs font-extrabold
+           uppercase tracking-[0.08em] text-white transition duration-300;
+    background: linear-gradient(135deg, #166534 0%, #0b4021 100%);
+  }
+
+  .btn-solid:hover {
+    filter: brightness(1.2);
+    box-shadow: 0 10px 20px -5px rgba(22, 101, 52, 0.4);
+  }
+}
+
+/* =========================================================
+   CABECALHO
+   ========================================================= */
+.site-header {
+  @apply sticky top-0 z-50 border-b border-zinc-100 bg-white;
+}
+
+.site-header__inner {
+  @apply flex min-h-[80px] items-center justify-between gap-6;
+}
+
+.nav-link {
+  @apply inline-flex items-center gap-2 whitespace-nowrap border-b-2 border-transparent px-4 py-6
+         text-[15px] leading-none text-zinc-700 transition-colors;
+}
+
+.nav-link:hover {
+  @apply text-zinc-900;
+}
+
+.nav-link[aria-current='page'] {
+  @apply font-semibold text-zinc-900;
+}
+
+/* Divisor "|" entre os itens do menu. */
+.nav-sep {
+  @apply select-none text-sm text-zinc-300;
+}
+
+.nav-item {
+  @apply relative;
+}
+
+.nav-caret {
+  @apply h-2.5 w-2.5 transition-transform duration-200;
+}
+
+.nav-menu {
+  @apply invisible absolute left-0 top-full z-50 min-w-[180px] translate-y-1 bg-white py-1
+         opacity-0 shadow-[0_6px_18px_-4px_rgba(0,0,0,0.15)] transition-all duration-200;
+}
+
+/*
+ * Em ponteiro com hover (desktop), quem abre e fecha o menu e o proprio CSS — hover ou
+ * foco do teclado. O JS so entra em cena no toque, onde nao existe hover; assim o clique
+ * nunca disputa com o hover e fecha um menu que acabou de abrir.
+ */
+@media (hover: hover) and (pointer: fine) {
+  .nav-item:hover > .nav-menu,
+  .nav-item:focus-within > .nav-menu {
+    @apply visible translate-y-0 opacity-100;
+  }
+
+  .nav-item:hover > .nav-link,
+  .nav-item:focus-within > .nav-link {
+    @apply border-brand-green text-zinc-900;
+  }
+
+  .nav-item:hover > .nav-link .nav-caret,
+  .nav-item:focus-within > .nav-link .nav-caret {
+    transform: rotate(180deg);
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .nav-item[data-open='true'] > .nav-menu {
+    @apply visible translate-y-0 opacity-100;
+  }
+
+  .nav-item[data-open='true'] > .nav-link {
+    @apply border-brand-green text-zinc-900;
+  }
+
+  .nav-item[data-open='true'] .nav-caret {
+    transform: rotate(180deg);
+  }
+}
+
+.nav-menu a {
+  @apply block px-5 py-3 text-[15px] text-zinc-600 transition-colors;
+}
+
+.nav-menu a:hover {
+  @apply bg-zinc-700 font-semibold text-white;
+}
+
+/* Navegacao mobile */
+.nav-toggle {
+  @apply inline-flex h-10 w-10 items-center justify-center rounded-lg text-zinc-700
+         transition-colors hover:bg-zinc-100 lg:hidden;
+}
+
+.mobile-nav {
+  @apply hidden border-t border-zinc-100 bg-white lg:hidden;
+}
+
+.mobile-nav[data-open='true'] {
+  @apply block;
+}
+
+.mobile-nav details > summary {
+  @apply flex cursor-pointer list-none items-center justify-between py-3 text-[15px] text-zinc-700;
+}
+
+.mobile-nav details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.mobile-nav details > summary::before {
+  content: none;
+}
+
+.mobile-nav details[open] > summary .nav-caret {
+  transform: rotate(180deg);
+}
+
+.mobile-nav a {
+  @apply block py-2 text-[15px] text-zinc-600;
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+.hero {
+  @apply relative overflow-hidden;
+  /* Gradiente serve de fallback enquanto a imagem carrega (ou se ela falhar). */
+  background: linear-gradient(115deg, #dcdcdc 0%, #e4e4e4 38%, #f3f3f3 39%, #f7f7f7 100%);
+}
+
+/* Hero com arte de fundo. A arte ja traz a marca d'agua "PRO", entao a versao CSS sai de cena. */
+.hero--image {
+  background-image: var(--hero-image),
+    linear-gradient(115deg, #dcdcdc 0%, #e4e4e4 38%, #f3f3f3 39%, #f7f7f7 100%);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.hero--image .hero__watermark {
+  display: none;
+}
+
+/* Marca d'agua "PRO" atras do conteudo do hero. */
+.hero__watermark {
+  @apply pointer-events-none absolute inset-0 flex select-none items-center justify-center;
+  font-size: min(34vw, 620px);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.045);
+}
+
+.hero__inner {
+  @apply relative z-10;
+}
+
+/* =========================================================
+   CARTAO GLASS (grade curricular, metodo, precos)
+   ========================================================= */
+.auvp-glass-card {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04);
+  border-radius: 16px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.auvp-glass-card:hover {
+  background: rgba(255, 255, 255, 0.8);
+  transform: translateY(-5px);
+  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.1);
+}
+
+/* =========================================================
+   GRADE CURRICULAR
+   ========================================================= */
+#auvp-modules-section .tabs-container {
+  @apply mb-10 flex flex-wrap justify-center gap-2.5;
+}
+
+#auvp-modules-section .tab-btn {
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  @apply cursor-pointer rounded-full px-6 py-3 text-sm font-bold uppercase text-zinc-500
+         transition-all duration-300;
+}
+
+#auvp-modules-section .tab-btn:hover {
+  border-color: rgba(22, 101, 52, 0.4);
+  color: #166534;
+}
+
+#auvp-modules-section .tab-btn.active {
+  background: #166534;
+  color: #fff;
+  border-color: #166534;
+  box-shadow: 0 4px 12px rgba(22, 101, 52, 0.3);
+}
+
+/* Carrossel horizontal no mobile, grade de 4 colunas no desktop. */
+#auvp-modules-section .modules-grid {
+  display: none;
+  flex-direction: row;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 24px;
+  gap: 16px;
+  scrollbar-width: none;
+}
+
+#auvp-modules-section .modules-grid::-webkit-scrollbar {
+  display: none;
+}
+
+#auvp-modules-section .modules-grid.active {
+  display: flex;
+}
+
+#auvp-modules-section .module-item-wrapper {
+  flex-shrink: 0;
+  width: 85vw;
+  max-width: 320px;
+  scroll-snap-align: center;
+}
+
+#auvp-modules-section .module-card {
+  @apply flex h-full flex-col p-6;
+}
+
+#auvp-modules-section .card-number {
+  background: rgba(22, 101, 52, 0.1);
+  @apply mb-3 w-fit rounded px-2 py-1 text-xs font-black uppercase text-brand-green;
+}
+
+#auvp-modules-section .card-title {
+  @apply mb-4 min-h-[3rem] text-xl font-bold text-zinc-900;
+}
+
+#auvp-modules-section .card-desc {
+  @apply text-left text-[0.95rem] leading-relaxed text-zinc-600;
+}
+
+@media (min-width: 1024px) {
+  #auvp-modules-section .modules-grid.active {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    overflow-x: visible;
+  }
+
+  #auvp-modules-section .module-item-wrapper {
+    width: auto;
+    max-width: none;
+  }
+}
+
+/* =========================================================
+   METODO AUVP PRO
+   ========================================================= */
+#auvp-method-section .method-grid {
+  @apply flex w-full flex-col gap-5;
+}
+
+#auvp-method-section .reveal-item {
+  width: 100%;
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* A classe .reveal-armed so e aplicada pelo JS; sem JS os cards ja nascem visiveis. */
+#auvp-method-section .reveal-item.reveal-armed {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+#auvp-method-section .reveal-item.reveal-armed.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#auvp-method-section .glass-card {
+  @apply flex h-full flex-col items-start p-6;
+}
+
+#auvp-method-section .method-icon {
+  background: rgba(22, 101, 52, 0.1);
+  @apply mb-4 flex h-[50px] w-[50px] shrink-0 items-center justify-center rounded-xl text-brand-green;
+}
+
+#auvp-method-section .card-label {
+  @apply mb-2 block text-[0.85rem] font-black uppercase text-brand-green;
+}
+
+#auvp-method-section .card-text {
+  @apply m-0 text-base font-medium leading-relaxed text-zinc-500;
+}
+
+@media (min-width: 1024px) {
+  #auvp-method-section .method-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+
+  #auvp-method-section .glass-card {
+    flex-direction: row;
+    align-items: center;
+    padding: 32px;
+  }
+
+  #auvp-method-section .method-icon {
+    margin-bottom: 0;
+    margin-right: 24px;
+    width: 64px;
+    height: 64px;
+  }
+}
+
+/* =========================================================
+   PRECOS
+   ========================================================= */
+#auvp-prices .glass-card {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+  border-radius: 12px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  @apply relative flex flex-col;
+}
+
+#auvp-prices .glass-card:hover {
+  background: rgba(255, 255, 255, 0.8);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.carousel-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 40px 20px 24px;
+  gap: 16px;
+}
+
+.carousel-container::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-item {
+  flex-shrink: 0;
+  width: 290px;
+  max-width: 82vw;
+  scroll-snap-align: start;
+}
+
+@media (min-width: 1024px) {
+  .carousel-container {
+    display: grid;
+    overflow-x: visible;
+    scroll-snap-type: none;
+    padding: 25px 0 24px;
+    gap: 24px;
+  }
+
+  .carousel-item {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+#auvp-prices .toggle-wrapper {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  padding: 4px;
+  @apply relative flex w-full max-w-[400px];
+}
+
+#auvp-prices .toggle-bg-slider {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  height: calc(100% - 8px);
+  width: calc(50% - 4px);
+  background: #18181b;
+  border-radius: 10px;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), width 0.4s ease;
+  z-index: 1;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+#auvp-prices .btn-toggle {
+  @apply relative z-[2] flex-1 cursor-pointer rounded-[10px] border-none bg-transparent px-2.5 py-3
+         text-[13px] font-bold uppercase text-zinc-500 transition-colors duration-300;
+}
+
+#auvp-prices .btn-toggle.active {
+  color: #fff;
+}
+
+/* Balao flutuante que chama atencao para a aba de pacotes. */
+.tooltip-hint {
+  position: absolute;
+  background: linear-gradient(135deg, #166534 0%, #0b4021 100%);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  pointer-events: none;
+  z-index: 30;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(11, 64, 33, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transform: translateX(-50%);
+}
+
+.tooltip-hint::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  background: #0b4021;
+}
+
+#auvp-prices .tooltip-hint {
+  top: -36px;
+  left: 75%;
+}
+
+@keyframes float-tooltip {
+  0%,
+  100% {
+    transform: translate(-50%, 0);
+  }
+  50% {
+    transform: translate(-50%, -6px);
+  }
+}
+
+.animate-float {
+  animation: float-tooltip 2s ease-in-out infinite;
+}
+
+.tooltip-hidden {
+  opacity: 0;
+  animation: none;
+  transform: translate(-50%, 10px);
+  transition: all 0.4s ease;
+  visibility: hidden;
+}
+
+.dots-container {
+  @apply mt-2 flex justify-center gap-2;
+}
+
+.dot {
+  @apply h-2 w-2 rounded-full transition-all duration-300;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.dot.active {
+  background: #166534;
+  width: 20px;
+  border-radius: 4px;
+}
+
+@media (min-width: 1024px) {
+  .dots-container {
+    display: none;
+  }
+}
+
+#auvp-prices .cta-button {
+  background: linear-gradient(135deg, #166534 0%, #0b4021 100%);
+  @apply mt-auto flex w-full cursor-pointer items-center justify-center rounded-none border-none
+         p-[18px] text-[13px] font-extrabold uppercase tracking-[0.08em] text-white
+         no-underline transition-all duration-300;
+}
+
+#auvp-prices .cta-button:hover {
+  filter: brightness(1.2);
+  box-shadow: 0 10px 20px -5px rgba(22, 101, 52, 0.4);
+}
+
+#auvp-prices .featured-tag {
+  background: linear-gradient(135deg, #166534 0%, #0b4021 100%);
+  @apply absolute left-1/2 top-[-16px] z-[50] -translate-x-1/2 whitespace-nowrap rounded-full
+         px-5 py-1.5 text-[10px] font-black uppercase text-white;
+  box-shadow: 0 4px 12px rgba(22, 101, 52, 0.3);
+}
+
+#auvp-prices .badge-discount {
+  @apply mb-3 w-fit rounded-md bg-highlight px-3.5 py-1.5 text-[10px] font-extrabold uppercase text-white;
+}
+
+#auvp-prices .payment-info {
+  background: rgba(0, 0, 0, 0.03);
+  border-left: 3px solid #166534;
+  @apply my-2.5 mb-4 rounded-lg px-3 py-2 text-[11px] leading-snug text-zinc-600;
+}
+
+.hidden-view {
+  display: none;
+}
+
+.check-green {
+  @apply shrink-0 text-[15px] font-bold text-brand-green;
+}
+
+/* =========================================================
+   JORNADA SALARIAL
+   ========================================================= */
+.glass-panel {
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+  width: 100%;
+}
+
+.timeline-container {
+  position: relative;
+  padding: 0 10px;
+}
+
+.timeline-line-area {
+  position: absolute;
+  top: 50%;
+  left: 22px;
+  right: 22px;
+  height: 3px;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.timeline-track {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(82, 82, 91, 0.15);
+}
+
+.timeline-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #0b4021 0%, #166534 50%, #22c55e 100%);
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.timeline-point {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 2px solid #52525b;
+  border-radius: 50%;
+  background-color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 20;
+  touch-action: manipulation;
+}
+
+.timeline-point:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 12px rgba(22, 101, 52, 0.2);
+}
+
+.timeline-point.active::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+.timeline-point.p-0.active {
+  color: #0b4021;
+}
+.timeline-point.p-1.active {
+  color: #166534;
+}
+.timeline-point.p-2.active {
+  color: #15803d;
+}
+.timeline-point.p-3.active {
+  color: #22c55e;
+}
+
+#auvp-journey .tooltip-hint {
+  top: -50px;
+  left: 50%;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 7px 14px;
+}
+
+#auvp-journey .tooltip-hint::after {
+  background: #166534;
+}
+
+@media (min-width: 768px) {
+  #auvp-journey .tooltip-hint {
+    left: 34%;
+  }
+}
+
+.fade-content {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.fade-content.hidden-anim {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.salary-item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 10px 0;
+}
+
+/* =========================================================
+   DEPOIMENTOS
+   ========================================================= */
+.testimonial-card {
+  @apply relative h-full overflow-hidden rounded-xl bg-[#f6f6f6] p-8 shadow-sm transition-shadow hover:shadow-md;
+  opacity: 0;
+  animation: slide-up-fade 0.6s ease-out forwards;
+}
+
+@keyframes slide-up-fade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.testimonial-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.testimonial-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.testimonial-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.testimonial-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.quote-icon {
+  @apply pointer-events-none absolute right-6 top-6 z-0 h-12 w-12 text-gray-100;
+}
+
+/* =========================================================
+   FAQ (abas + acordeao)
+   ========================================================= */
+.faq-panel {
+  display: none;
+  animation: fade-in 0.5s ease-in-out;
+}
+
+.faq-panel.is-active {
+  display: block;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menu-tab ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-tab li {
+  padding: 8px 0;
+}
+
+.menu-tab .menu-item {
+  @apply cursor-pointer border-none bg-transparent p-0 text-left text-base text-brand-ink
+         transition-colors duration-200 md:text-lg;
+}
+
+.menu-tab .menu-item:hover {
+  color: #000;
+}
+
+.menu-tab .menu-item[aria-selected='true'] {
+  color: #000;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.faq-item {
+  @apply border-b border-zinc-200 pb-2;
+}
+
+.faq-item > summary {
+  list-style: none;
+  cursor: pointer;
+  transition: margin 0.3s ease-in-out;
+  @apply text-xl font-semibold text-brand-ink;
+}
+
+.faq-item > summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item > summary::before {
+  content: '+';
+  margin-right: 0.5rem;
+  font-weight: bold;
+  display: inline-block;
+  transition: transform 0.3s ease-in-out;
+}
+
+.faq-item[open] > summary::before {
+  transform: rotate(45deg);
+}
+
+.faq-item[open] > summary {
+  margin-bottom: 0.5rem;
+}
+
+/* Somente o filho direto recebe o recuo, para nao empilhar indentacoes. */
+.faq-item > *:not(summary) {
+  padding-left: 1.5rem;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+.faq-item[open] > *:not(summary) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.faq-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 0.95rem;
+}
+
+.faq-table th,
+.faq-table td {
+  border: 1px solid #e5e7eb;
+  padding: 8px;
+  text-align: left;
+}
+
+.faq-table th {
+  background-color: #e5e7eb;
+  font-weight: 600;
+}
+
+/* =========================================================
+   PAGINA HP-12C
+   ========================================================= */
+#hp12c-widget-container {
+  @apply relative mx-auto w-full max-w-[560px] overflow-hidden;
+}
+
+#hp12c-widget-container iframe {
+  @apply block w-full border-none;
+}
+
+.banner-questoes {
+  background: linear-gradient(100deg, #020c04 0%, #063310 55%, #0b4021 100%);
+}
+
+/* Carrossel de aulas (Swiper) */
+.carousel-wrapper {
+  position: relative;
+  width: 100%;
+  padding: 0 60px;
+}
+
+.carousel-wrapper .swiper {
+  width: 100%;
+  padding-bottom: 40px;
+}
+
+.carousel-wrapper .swiper-slide {
+  height: auto;
+  display: flex;
+}
+
+.lesson-card {
+  @apply flex h-full w-full flex-col gap-4 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm;
+}
+
+.custom-prev,
+.custom-next {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  @apply z-20 flex cursor-pointer items-center justify-center border-none bg-transparent text-brand-ink;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.custom-prev {
+  left: 0;
+}
+
+.custom-next {
+  right: 0;
+}
+
+.custom-prev:hover,
+.custom-next:hover {
+  color: #000;
+  transform: translateY(-50%) scale(1.2);
+}
+
+.carousel-wrapper .swiper-pagination-bullet {
+  background: #cbd5e1;
+  opacity: 1;
+  width: 8px;
+  height: 8px;
+  transition: all 0.3s;
+}
+
+.carousel-wrapper .swiper-pagination-bullet-active {
+  background: #4b4b4b;
+  width: 24px;
+  border-radius: 4px;
+}
+
+@media (max-width: 640px) {
+  .carousel-wrapper {
+    padding: 0;
+  }
+
+  .custom-prev,
+  .custom-next {
+    display: none;
+  }
+}
+
+/* =========================================================
+   BANNER "MERCADO DE TRABALHO"
+   ========================================================= */
+.banner-mercado {
+  @apply relative overflow-hidden bg-zinc-900 bg-cover bg-center;
+  background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.55) 55%, rgba(0, 0, 0, 0.75) 100%),
+    var(--banner-mercado-image, none);
+}
+
+/* =========================================================
+   TEXTO LEGAL (termos, privacidade)
+   ========================================================= */
+.legal-prose {
+  @apply text-[15px] leading-relaxed text-zinc-600;
+}
+
+.legal-prose h2 {
+  @apply mb-3 mt-10 text-base font-bold uppercase tracking-wide text-zinc-800;
+}
+
+.legal-prose h2:first-child {
+  @apply mt-0;
+}
+
+.legal-prose p {
+  @apply mb-4;
+}
+
+.legal-prose ul,
+.legal-prose ol {
+  @apply mb-4 space-y-2 pl-6;
+}
+
+.legal-prose ul {
+  @apply list-disc;
+}
+
+.legal-prose ol {
+  @apply list-[lower-alpha];
+}
+
+/* A secao 6 usa numeracao decimal no nivel externo e letras no aninhado. */
+.legal-prose ol.legal-list-decimal {
+  @apply list-decimal;
+}
+
+.legal-prose ol ol {
+  @apply mb-0 mt-2 list-[lower-alpha];
+}
+
+.legal-prose a {
+  @apply text-brand-green underline underline-offset-2 hover:text-brand-green-dark;
+}
+
+.legal-prose strong {
+  @apply font-semibold text-zinc-800;
+}
+
+/* Marcador visivel para trechos que ainda precisam do texto oficial. */
+.legal-placeholder {
+  @apply mb-4 rounded-lg border border-dashed border-amber-400 bg-amber-50 px-4 py-3 text-sm text-amber-900;
+}
+
+/* =========================================================
+   RODAPE
+   ========================================================= */
+.site-footer {
+  @apply bg-black py-16 text-zinc-300 md:py-20;
+}
+
+.site-footer h2 {
+  @apply mb-5 text-base font-semibold text-white;
+}
+
+.site-footer a {
+  @apply inline-flex items-center gap-2 py-1.5 text-[15px] text-zinc-300 transition-colors hover:text-white;
+}
