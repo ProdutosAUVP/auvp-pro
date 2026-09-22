@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  {{> head }}
+  <title>Inscrição confirmada — AUVP Pro</title>
+  <meta name="description" content="Pagamento aprovado e inscrição confirmada na AUVP Pro." />
+  <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+  {{> header }}
+
+  <main>
+    <section class="hero hero--image">
+      <div class="hero__watermark" aria-hidden="true">PRO</div>
+      <div class="container-page hero__inner py-20 text-center md:py-28">
+        <div class="mx-auto flex max-w-4xl flex-col items-center text-zinc-800">
+          <div class="[&_img]:h-20 md:[&_img]:h-24">{{> logo-pro }}</div>
+
+          <h1 class="mt-10 text-2xl font-bold tracking-tight md:text-4xl">
+            Pagamento aprovado e inscrição confirmada!
+          </h1>
+
+          <p class="mt-8 text-base leading-relaxed text-zinc-600 md:text-lg">
+            Parabéns por tomar essa importante decisão e fazer parte da AUVP PRO.<br />
+            Temos certeza que o conhecimento adquirido aqui será determinante para a sua evolução
+            profissional e para o alcance de resultados significativos no mercado financeiro.
+          </p>
+
+          <p class="mt-8 text-base leading-relaxed text-zinc-600 md:text-lg">
+            Dentro de alguns minutos, <strong>você receberá por e-mail o acesso à plataforma.</strong>
+            Caso não encontre, verifique sua caixa de spam. Se houver qualquer dúvida ou problema,
+            basta entrar em contato conosco pelo WhatsApp.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-surface">
+      <div class="container-page">
+        {{> faq-pro }}
+      </div>
+    </section>
+  </main>
+
+  {{> footer }}
+</body>
+</html>
