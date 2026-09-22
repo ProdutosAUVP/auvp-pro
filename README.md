@@ -62,6 +62,4 @@ Nenhum caminho precisa mudar: tudo já é relativo.
 - **Logo da AUVP Capital**: o rodapé dos prints usa a marca da Capital, que não veio no
   pacote de logos. Está com o logo da AUVP Pro em branco no lugar — ver `brand/README.md`.
 - **Imagem de fundo do hero**: definida em `--hero-image` no topo de `src/css/main.css`.
-- **Foto do banner "mercado de trabalho"**: definir `--banner-mercado-image` com a
-  `url(...)` da foto; hoje o bloco usa só o gradiente escuro.
 - **Links de checkout**: os botões de preço estão com `href="#"` em `src/pages/index.html`.
