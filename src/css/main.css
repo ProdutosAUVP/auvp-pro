@@ -112,12 +112,28 @@
 }
 
 .nav-link {
-  @apply inline-flex items-center gap-2 whitespace-nowrap border-b-2 border-transparent px-4 py-6
-         text-[15px] leading-none text-zinc-700 transition-colors;
+  @apply relative inline-flex items-center gap-2 whitespace-nowrap px-4 py-6 text-[15px]
+         leading-none text-zinc-700 transition-colors;
 }
 
 .nav-link:hover {
   @apply text-zinc-900;
+}
+
+/*
+ * O sublinhado e um pseudo-elemento em scaleX: com transform-origin no centro (padrao),
+ * ele nasce no meio e cresce para as duas pontas. Animar transform em vez de width
+ * mantem tudo no compositor, sem reflow.
+ */
+.nav-link::after {
+  content: '';
+  @apply absolute inset-x-0 bottom-0 h-0.5 bg-brand-green;
+  transform: scaleX(0);
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
 }
 
 .nav-link[aria-current='page'] {
@@ -138,8 +154,9 @@
 }
 
 .nav-menu {
-  @apply invisible absolute left-0 top-full z-50 min-w-[180px] translate-y-1 bg-white py-1
-         opacity-0 shadow-[0_6px_18px_-4px_rgba(0,0,0,0.15)] transition-all duration-200;
+  @apply invisible absolute left-0 top-full z-50 min-w-[180px] translate-y-1 overflow-hidden
+         rounded-b-lg bg-white py-1 opacity-0 shadow-[0_6px_18px_-4px_rgba(0,0,0,0.15)]
+         transition-all duration-200;
 }
 
 /*
@@ -155,7 +172,12 @@
 
   .nav-item:hover > .nav-link,
   .nav-item:focus-within > .nav-link {
-    @apply border-brand-green text-zinc-900;
+    @apply text-zinc-900;
+  }
+
+  .nav-item:hover > .nav-link::after,
+  .nav-item:focus-within > .nav-link::after {
+    transform: scaleX(1);
   }
 
   .nav-item:hover > .nav-link .nav-caret,
@@ -170,7 +192,11 @@
   }
 
   .nav-item[data-open='true'] > .nav-link {
-    @apply border-brand-green text-zinc-900;
+    @apply text-zinc-900;
+  }
+
+  .nav-item[data-open='true'] > .nav-link::after {
+    transform: scaleX(1);
   }
 
   .nav-item[data-open='true'] .nav-caret {
@@ -973,15 +999,6 @@
   .custom-next {
     display: none;
   }
-}
-
-/* =========================================================
-   BANNER "MERCADO DE TRABALHO"
-   ========================================================= */
-.banner-mercado {
-  @apply relative overflow-hidden bg-zinc-900 bg-cover bg-center;
-  background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.55) 55%, rgba(0, 0, 0, 0.75) 100%),
-    var(--banner-mercado-image, none);
 }
 
 /* =========================================================
