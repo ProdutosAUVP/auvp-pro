@@ -19,7 +19,8 @@ src/
   js/site.js          comportamentos de todas as páginas (cada init é no-op se o bloco não existe)
   partials/           head, header, footer, logos e o FAQ compartilhado
   pages/              uma pasta por URL — index, hp12c/, termos/, obrigado/
-static/               arquivos copiados como estão (favicon, robots.txt)
+static/               arquivos copiados como estão (logos, favicon, robots.txt)
+brand/                pacote de marca (origem); não vai para o ar — ver brand/README.md
 build.mjs             monta as páginas, compila o Tailwind e copia os assets para dist/
 ```
 
@@ -58,8 +59,8 @@ Nenhum caminho precisa mudar: tudo já é relativo.
 
 ## Pontos que dependem de material externo
 
-- **Logo** (`src/partials/logo-pro.html` e `logo-capital.html`): SVG provisório desenhado
-  a partir dos prints. Substituir pelo arquivo oficial da marca.
+- **Logo da AUVP Capital**: o rodapé dos prints usa a marca da Capital, que não veio no
+  pacote de logos. Está com o logo da AUVP Pro em branco no lugar — ver `brand/README.md`.
 - **Imagem de fundo do hero**: definida em `--hero-image` no topo de `src/css/main.css`.
 - **Foto do banner "mercado de trabalho"**: definir `--banner-mercado-image` com a
   `url(...)` da foto; hoje o bloco usa só o gradiente escuro.
